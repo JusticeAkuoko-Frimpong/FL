@@ -54,8 +54,7 @@ Finally, we use the combine summaries to estimate and fit our model.
 soln = FL(combined_summaries)
 print(soln)
 ```
-These will return a list of the estimates of the regression coefficients, standard errors, t values, p values.
-For SLR models make sure X is a column vector
+These will return a dataframe of the estimates of the regression coefficients, standard errors, t values, p values.
 
 ## Authors
 Justice Akuoko-Frimpong <jakuokof@umich.edu>
