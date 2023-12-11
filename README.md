@@ -37,7 +37,7 @@ noise2 = rnorm(100, 0, 1)
 Purchase2 = 20000 + 500*age2 + 0.05*income2 + 10*age2*income2/100000 + noise2
 data2 = data.frame(age = age2, income = income2, Purchase = Purchase2)
 ```
-Now, we compute the individual summaries with "FL_local_summary" function and combine the local summaries using the "FL_combine" function.
+Now, we compute the individual summaries with 'FL_local_summary' function and combine the local summaries using the 'FL_combine' function.
 ```r
 summary1 = FL_local_summary(Purchase ~ age + income +income:age, data1)
 summary2 = FL_local_summary(Purchase ~ age + income + income:age, data2)
