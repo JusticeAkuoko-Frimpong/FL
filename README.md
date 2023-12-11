@@ -1,7 +1,8 @@
 # FL
 [![R-CMD-check](https://github.com/JusticeAkuoko-Frimpong/Regress/workflows/R-CMD-check/badge.svg)](https://github.com/JusticeAkuoko-Frimpong/FL/actions)
-[![codecov](https://codecov.io/gh/JusticeAkuoko-Frimpong/Regress/branch/main/graph/badge.svg?token=abcdefg123456)](https://codecov.io/gh/JusticeAkuoko-Frimpong/FL)
-
+<!-- badges: start -->
+  [![Codecov test coverage](https://codecov.io/gh/JusticeAkuoko-Frimpong/FL/branch/main/graph/badge.svg)](https://app.codecov.io/gh/JusticeAkuoko-Frimpong/FL?branch=main)
+  <!-- badges: end -->
 
 
 The goal of the FL package is to provide functions implement federated learning procedures.
