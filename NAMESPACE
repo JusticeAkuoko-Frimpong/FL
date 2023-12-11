@@ -3,3 +3,5 @@
 export(FL)
 export(FL_combine)
 export(FL_local_summary)
+importFrom(stats,model.matrix)
+importFrom(stats,pt)

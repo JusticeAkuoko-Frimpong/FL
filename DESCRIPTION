@@ -5,7 +5,6 @@ Authors@R: c(person("Justice", "Akuoko-Frimpong", email = "jakuokof@umich.edu", 
 Maintainer: Justice Akuoko-Frimpong <jakuokof@umich.edu>
 Description: This package houses comprehensive functions that enables one to implement federated learning procedure.The package is designed to be user-friendly.It provides functions to compute local summaries of servers, a different function to combine these summaries and a final fucntion to fit a linear regression mdoel. It provides estimates of the Regression coefficients, standard error, t values, p values.
 License: GPL-2
-    license
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

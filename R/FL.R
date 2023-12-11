@@ -35,6 +35,8 @@
 #'Purchase2 = 20000 + 500*age2 + 0.05*income2 + 10*age2*income2/100000 + noise2
 #'data2 = data.frame(age = age2, income = income2, Purchase = Purchase2)
 #'summary2 = FL_local_summary(Purchase ~ age + income +income:age, data2)
+#'
+#'@importFrom stats model.matrix pt
 #'@export
 #'
 FL_local_summary = function(formula, data) {

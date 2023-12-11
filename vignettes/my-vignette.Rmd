@@ -81,6 +81,8 @@ all.equal(coef(summary(model)),as.matrix(soln), check.attributes=FALSE)
 ```
 Let us use "bench::mark" to compare the efficiency of the FL and lm(). The numeric values are the same (ignoring the attributes), so we set "check=FALSE" here to ignore the attributes.
 ```{r}
+install.packages("bench")
+library(bench)
 benchmark1 = bench::mark(
  my_fun = soln, 
  lm_fun =  coef(summary(model)), 
