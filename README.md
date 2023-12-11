@@ -1,7 +1,5 @@
 # FL
-<!-- badges: start -->
   [![R-CMD-check](https://github.com/JusticeAkuoko-Frimpong/FL/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JusticeAkuoko-Frimpong/FL/actions/workflows/R-CMD-check.yaml)
-  <!-- badges: end -->
 The goal of the FL package is to provide functions implement federated learning procedures.
 ## Description
 The FL package provides comprehensive functions to implement federated learning procedures. The package is designed to be user-friendly.It provides functions to compute local summaries of servers, a different function to combine these summaries and a final function to fit a linear regression mdoel. It provides estimates of the regression coefficients, standard errors, t values, p values.
