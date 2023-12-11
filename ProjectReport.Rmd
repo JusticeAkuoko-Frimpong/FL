@@ -1,0 +1,20 @@
+Introduction:
+
+1) general intro (JT)
+
+Materials and methods
+
+1) Federated learning math theory (JA)
+
+2) FL Package (MK)
+
+3) Dataset (JT)
+
+
+Application and Results
+
+1) R shiny (JT)
+
+2) Results - proof that FL worked (MK)
+
+Discussion and Limitations (MK & JA)
