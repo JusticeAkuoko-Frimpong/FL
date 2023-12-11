@@ -1,0 +1,92 @@
+---
+title: "FL-General usage"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+This vignette will explain how to use the package for implementing federated learning procedure using a simulated data.
+
+```{r setup}
+library(FL)
+```
+
+We will first simulate a data using this created function below. This will enable us generate different datasets to make things a little complicated.
+```{r}
+generate_data = function(n, mean_age, sd_age, mean_income, sd_income, intercept, age_effect, income_effect, noise_effect) {
+  age = rnorm(n, mean = mean_age, sd = sd_age)  # simulating age
+  income = rnorm(n, mean = mean_income, sd = sd_income)  # simulating income
+  group = as.factor(sample(LETTERS[1:3], n, replace = TRUE))  # simulating group
+  noise = rnorm(n, 0, noise_effect)  # some noise
+  Purchase = intercept + age_effect * age + income_effect * income  +  noise + ifelse(group == 'A', 1000, (ifelse(group =='B', 2000, 3000))) # creating a relationship for Purchase
+  
+  data = data.frame(age = age, income = income, group = group, Purchase = Purchase)
+  
+  return(data)
+}
+
+# Generate four datasets
+data1 = generate_data(100, 50, 10, 50000, 10000, 20000, 500, 0.05, 1)
+data2 = generate_data(100, 45, 15, 45000, 15000, 25000, 600, 0.04, 1)
+data3 = generate_data(100, 55, 8, 55000, 5000, 21000, 400, 0.03, 1)
+data4 = generate_data(100, 42, 12, 40000, 8000, 26000, 550, 0.06, 1)
+```
+
+
+# Compute local summaries
+Take these 4 datasets as datasets from different local servers. Next, we compute local-level summaries needed to fit the model. You will need to know the modelyou want to fit in the central server  to enable local servers compute specific summaries using specified variables. Supposing a model, we compute the summaries:
+```{r}
+# Summary stats for the datasets, supposing the model in the function.
+summary1 = FL_local_summary(Purchase ~ age + income + group + age:income + age:group + income:group, data1)
+summary2 = FL_local_summary(Purchase ~ age + income + group + age:income + age:group + income:group, data2)
+summary3 = FL_local_summary(Purchase ~ age + income + group + age:income + age:group + income:group, data3)
+summary4 = FL_local_summary(Purchase ~ age + income + group + age:income + age:group + income:group, data4)
+```
+
+# Combine summaries
+Now, you will need to combine these individual summaries into one.
+```{r}
+combined_summaries = FL_combine(list(summary1, summary2, summary3, summary4))
+```
+
+
+# Federate learning
+Now, use these combine summaries to fit the model.
+```{r}
+soln= FL(combined_summaries)
+print(soln)
+```
+
+# Comparison of the results from FL with the lm() function
+Here, we compare the results with lm() function using all.equal() to demonstrate correctness of the functions in the FL package. Let us compare the estimates from the models.
+```{r}
+#combine the 4 datasets
+data = rbind(data1, data2,data3,data4)
+model=lm(Purchase ~ age + income + group + age:income + age:group + income:group, data=data)
+```
+
+Set "check.attributes = FALSE" because the outputs have different names/attributes.
+```{r}
+all.equal(coef(summary(model)),as.matrix(soln), check.attributes=FALSE)
+```
+Let us use "bench::mark" to compare the efficiency of the FL and lm(). The numeric values are the same (ignoring the attributes), so we set "check=FALSE" here to ignore the attributes.
+```{r}
+benchmark1 = bench::mark(
+ my_fun = soln, 
+ lm_fun =  coef(summary(model)), 
+ iterations = 100,
+ check = FALSE
+)
+# Print the result
+print(benchmark1)
+```
