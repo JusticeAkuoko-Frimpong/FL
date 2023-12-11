@@ -1,7 +1,7 @@
 # FL
 The goal of the FL package is to provide functions implement federated learning procedures.
 ## Description
-The FL package provides comprehensive functions to implement federated learning procedures. The package is designed to be user-friendly.It provides functions to compute local summaries of servers, a different function to combine these summaries and a final function to fit a linear regression mdoel. It provides estimates of the Regression coefficients, standard error, t values, p values.
+The FL package provides comprehensive functions to implement federated learning procedures. The package is designed to be user-friendly.It provides functions to compute local summaries of servers, a different function to combine these summaries and a final function to fit a linear regression mdoel. It provides estimates of the regression coefficients, standard errors, t values, p values.
 
 ## Getting Started
 
