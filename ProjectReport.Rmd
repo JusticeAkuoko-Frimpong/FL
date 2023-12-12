@@ -50,6 +50,12 @@ P-values and t-statistics can be computed using these estimated values. After th
 
 
 ## FL Package (MK)
+We created a federated learning package “FL” that is hosted on github.  This package facilitates the federated learning analysis in a modular format with 3 key functions. 
+The first function (“FL_local_summary”) takes in a csv input which includes the specified data set as well as the desired regression formula.  It then runs the local server analysis with a clean output of all the summary statistics.  The local servers will then send that summary output to the central server with no additional work.  The package will facilitate this through the use of an R Shiny app (to be discussed in detail later).
+The second function (“FL_combine”) is designed to be used at the central server and combines all the summary statistics from the local servers as described earlier in the report.  The only inputs necessary are the direct outputs from the first function.
+The third function (“FL”) runs the federated learning analysis to produce the results of the study.  The input for this function is the output from the second function.
+Having these functions integrated into each other allows for our analysis to be run in a seamless way with reduced risk of error.
+
 
 ## Dataset (JT)
 
@@ -58,6 +64,36 @@ P-values and t-statistics can be computed using these estimated values. After th
 ## R shiny (JT)
 
 ## Results - proof that FL worked (MK)
+Our project treated different insurance companies as the central server and used the equation [***].  For all 5 local servers we ran the “FL_local_sumamry” function and sent only the summary statistics to the central server.  We then ran the “FL_combine” function.  Finally, we ran the “FL” function and got the results below.
+
+```{r}
+Aetna.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Aetna)
+United.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, UnitedHealthcare)
+Bluecross.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Blue.cross)
+Cigna.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Cigna)
+Medicare.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Medicare)
+
+
+##output below will be Aetna
+FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Aetna)
+
+combine.sum = FL_combine(list(Aetna.Sum, United.Sum, Cigna.Sum, Medicare.Sum, Bluecross.Sum))
+
+FL(combine.sum)
+```
+To prove that our federated learning process was a success we ran the well established lm() function on the oracle (combined) dataset and compared the results to our federated learning process.  As can be seen below, we have exact matches in the desired statistice
+
+
+```{r}
+oracle = lm(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, data = full_data)
+oraclesum = summary(oracle)
+
+all.equal(unname(coef(oracle)),FL$Estimate)
+all.equal(unname(oraclesum$coefficients[, "Std. Error"]),FL$Std..Error)
+all.equal(unname(oraclesum$coefficients[, "t value"]),FL$t.value)
+all.equal(unname(oraclesum$coefficients[, "Pr(>|t|)"]),FL$p.value)
+```
+
 
 
 # Discussion and Limitations (MK & JA)
