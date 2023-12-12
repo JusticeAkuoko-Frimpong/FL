@@ -1,20 +1,107 @@
-Introduction:
+---
+title: "FL : A Flexible Federated Learning Package for Real-World and Simulated Applications"
+author: "Justice Akuoko-Frimpong, Michael Kaye, and Jonathan Ta"
+date: "December 2023"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+always_allow_html: yes
+---
+
+# Introduction 
 
 1) general intro (JT)
 
-Materials and methods
+# Methods
 
-1) Federated learning math theory (JA)
+## Federated learning math theory (JA)
 
-2) FL Package (MK)
+Federated Learning is an emerging machine learning paradigm that aims to train a collaborative model while keeping all the training data localized (Yang et al., 2022). Data communication from client devices to global servers is not necessary. Rather, the model is trained locally using the raw data on edge devices, hence improving data privacy. The local modifications are aggregated to build the final model in a shared way.\newline
+In clinical settings, to maintain patient data security, federated learning still has to be implemented carefully. However, it has the potential to tackle some of the challenges we faced by approaches that require the pooling of sensitive clinical data.
+Clinical data can be collected inside an institution's security safeguards for federated learning. Each individual maintains ownership of their own clinical data.
+Federated learning allows teams to create bigger, more varied datasets for algorithm training, even as it becomes more difficult to retrieve sensitive patient data as a result.
+By using a federated learning strategy, various healthcare facilities, research institutes, and hospitals are also encouraged to work together to create a model that might be advantageous to all of them.Here are some reasons why federated learning matters (Shastri, 2023):
 
-3) Dataset (JT)
+\textbf{Privacy}: Federated learning allows training to happen locally, avoiding potential data breaches, in contrast to traditional approaches that send data to a central server for training.\newline
+\textbf{Data security}: is ensured by sharing only summary statistics updates with the central server.\newline
+\textbf{Access to heterogeneous data}: is ensured via federated learning, which makes data dispersed across many companies, places, and devices accessible. It allows for secure and private training of models on sensitive data, like financial or medical data. Additionally, models may be made more generalizable with increased data diversity.
+
+### How does federated learning work? 
+At the central server is a general baseline model. The client devices receive copies of this model, and they use the local data they produce to train the models. Individual models improve with time, becoming more tailored to the user's needs. In the next phase, secure aggregation techniques are used to exchange the updates (summary statistics) from the locally trained models with the central server's primary model. This model creates new learnings by averaging and combining various inputs.
+Once the model in the central server has been re-trained with the new summary statistics, it is shared with the client devices again for the next iteration. The network diagram in the appendix illustrates the flow of federated learning approaches.
 
 
-Application and Results
+### Fitting a linear regression model
+Suppose we have $k$ groups in a study. Each group has different data but identical columns. To answer a research question with a linear regression model, assume independence of the responses from individuals across the k groups. The coefficients for the regression can computed using the following user-specific summary statistics $SSX$, $SSY$, $SSXY$, and  $n$ from all $k$  groups to obtain the estimates of the coefficients using the formula:\newline
+\begin{align*}
+    \hat{\beta} = (\sum_{k=1}^{K} X^T_kX_k)^{-1}\times(\sum_{k=1}^{K} X^T_ky_k)
+\end{align*} 
+where $X_k$ is the design matrix and $Y_k$ is the response vector for the $k$-th group.To further evaluate the significance of the coefficients, standard errors of the estimated coefficients will be  calculated using the formula below, which is also in the federated learning form:\\
+\begin{align*}
+    \widehat{se}(\widehat{\beta}_j) = \sqrt{\widehat{\sigma}^2(X^\top X)^{-1}_{jj}}\text{, with }\widehat{\sigma}^2 = \frac{\widehat{\epsilon}^\top \widehat{\epsilon}}{n-p},
+\end{align*}
+where
+\begin{align*}
+    \widehat{\epsilon}^\top \widehat{\epsilon}=\sum_{k=1}^K y_k^\top y_k - 2\widehat \beta \sum_{k=1}^K X_k^\top y_k + \widehat\beta \left( \sum_{k=1}^K X_k^\top X_k\right)\widehat\beta
+\end{align*}
+P-values and t-statistics can be computed using these estimated values. After the calculation of all the coefficients and corresponding variances, we conduct a t-test to test the significance of each coefficient.
 
-1) R shiny (JT)
 
-2) Results - proof that FL worked (MK)
 
-Discussion and Limitations (MK & JA)
+## FL Package (MK)
+
+## Dataset (JT)
+
+# Application and Results
+
+## R shiny (JT)
+
+## Results - proof that FL worked (MK)
+
+
+# Discussion and Limitations (MK & JA)
+
+Our package and federated learning in general have some limitaions. Model diagnostics are difficult to carry out on the scale of complete data, but they may be done at the individual user, group, or site level utilizing subsets of data which will be a little difficult to generalize to the whole model in the central server. Verifying the quality of data and locating anomalies or influential data instances is difficult. Since more observations increase the variability of the data distribution, an outlier in a local data set may not always represent an outlier in the entire set.
+The flexibility of data analysis operations at individual users'/sites is limited since all users/sites are needed to concur on gathering the same data and doing the same analysis in order to provide the necessary statistics.
+ 
+# References 
+
+- Yang, H., Lam, K., Xiao, L., Xiong, Z., Hu, H., Niyato, D., & Poor, H. V. (2022, July 25). *Lead federated neuromorphic learning for wireless edge artificial intelligence*. [Scientific Reports, 12(1), 13540](https://scite.ai/reports/10.1038/s41467-022-32020-w)
+
+- Shastri, Y. (2023, April 20). *A Step-by-Step Guide to Federated Learning in Computer Vision*. [V7 Blog](https://www.v7labs.com/blog/federated-learning-guide#:~:text=Federated%20learning%20(often%20referred%20to,model%20locally%2C%20increasing%20data%20privacy.)
+
+- Song, P. (2023). *Federated Statistical Learning and Distributed Computing* [PowerPoint slides]. BIOSTAT 620, University of Michigan, Ann Arbor, MI.
+
+
+
+
+
+
+
+
+
+# Appendix
+
+## Network Diagram
+```{r include_diagram, echo=FALSE, results='asis'}
+library(DiagrammeR)
+
+
+grViz("
+  digraph {
+    graph [layout = dot, rankdir = TB]
+    node [shape = rectangle, style = filled, color = black, fillcolor = white, fontcolor = black]
+    A [label = 'Central Server']
+    B [label = 'Local Server 1']
+    C [label = 'Local Server 2']
+    D [label = 'Local Server 3']
+    E [label = 'Local Server 4']
+    B -> A [label = 'Updates', color = blue]
+    C -> A [label = 'Updates', color = blue]
+    D -> A [label = 'Updates', color = blue]
+    E -> A [label = 'Updates', color = blue]
+  }"
+)
+```
+
