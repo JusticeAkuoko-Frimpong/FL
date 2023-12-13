@@ -1,0 +1,530 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={FL : A Flexible Federated Learning Package for Real-World and Simulated Applications},
+  pdfauthor={Justice Akuoko-Frimpong, Michael Kaye, and Jonathan Ta},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{FL : A Flexible Federated Learning Package for Real-World and
+Simulated Applications}
+\author{Justice Akuoko-Frimpong, Michael Kaye, and Jonathan Ta}
+\date{December 2023}
+
+\begin{document}
+\maketitle
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  general intro (JT)
+\end{enumerate}
+
+\hypertarget{methods}{%
+\section{Methods}\label{methods}}
+
+\hypertarget{federated-learning-math-theory-ja}{%
+\subsection{Federated learning math theory
+(JA)}\label{federated-learning-math-theory-ja}}
+
+Federated Learning is an emerging machine learning paradigm that aims to
+train a collaborative model while keeping all the training data
+localized (Yang et al., 2022). Data communication from client devices to
+global servers is not necessary. Rather, the model is trained locally
+using the raw data on edge devices, hence improving data privacy. The
+local modifications are aggregated to build the final model in a shared
+way.\newline In clinical settings, to maintain patient data security,
+federated learning still has to be implemented carefully. However, it
+has the potential to tackle some of the challenges we faced by
+approaches that require the pooling of sensitive clinical data. Clinical
+data can be collected inside an institution's security safeguards for
+federated learning. Each individual maintains ownership of their own
+clinical data. Federated learning allows teams to create bigger, more
+varied datasets for algorithm training, even as it becomes more
+difficult to retrieve sensitive patient data as a result. By using a
+federated learning strategy, various healthcare facilities, research
+institutes, and hospitals are also encouraged to work together to create
+a model that might be advantageous to all of them.Here are some reasons
+why federated learning matters (Shastri, 2023):
+
+\textbf{Privacy}: Federated learning allows training to happen locally,
+avoiding potential data breaches, in contrast to traditional approaches
+that send data to a central server for training.\newline
+\textbf{Data security}: is ensured by sharing only summary statistics
+updates with the central server.\newline
+\textbf{Access to heterogeneous data}: is ensured via federated
+learning, which makes data dispersed across many companies, places, and
+devices accessible. It allows for secure and private training of models
+on sensitive data, like financial or medical data. Additionally, models
+may be made more generalizable with increased data diversity.
+
+\hypertarget{how-does-federated-learning-work}{%
+\subsubsection{How does federated learning
+work?}\label{how-does-federated-learning-work}}
+
+At the central server is a general baseline model. The client devices
+receive copies of this model, and they use the local data they produce
+to train the models. Individual models improve with time, becoming more
+tailored to the user's needs. In the next phase, secure aggregation
+techniques are used to exchange the updates (summary statistics) from
+the locally trained models with the central server's primary model. This
+model creates new learnings by averaging and combining various inputs.
+Once the model in the central server has been re-trained with the new
+summary statistics, it is shared with the client devices again for the
+next iteration. The network diagram in the appendix illustrates the flow
+of federated learning approaches.
+
+\hypertarget{fitting-a-linear-regression-model}{%
+\subsubsection{Fitting a linear regression
+model}\label{fitting-a-linear-regression-model}}
+
+Suppose we have \(k\) groups in a study. Each group has different data
+but identical columns. To answer a research question with a linear
+regression model, assume independence of the responses from individuals
+across the k groups. The coefficients for the regression can computed
+using the following user-specific summary statistics \(SSX\), \(SSY\),
+\(SSXY\), and \(n\) from all \(k\) groups to obtain the estimates of the
+coefficients using the formula:\newline \begin{align*}
+    \hat{\beta} = (\sum_{k=1}^{K} X^T_kX_k)^{-1}\times(\sum_{k=1}^{K} X^T_ky_k)
+\end{align*} where \(X_k\) is the design matrix and \(Y_k\) is the
+response vector for the \(k\)-th group.To further evaluate the
+significance of the coefficients, standard errors of the estimated
+coefficients will be calculated using the formula below, which is also
+in the federated learning form:\textbackslash{} \begin{align*}
+    \widehat{se}(\widehat{\beta}_j) = \sqrt{\widehat{\sigma}^2(X^\top X)^{-1}_{jj}}\text{, with }\widehat{\sigma}^2 = \frac{\widehat{\epsilon}^\top \widehat{\epsilon}}{n-p},
+\end{align*} where \begin{align*}
+    \widehat{\epsilon}^\top \widehat{\epsilon}=\sum_{k=1}^K y_k^\top y_k - 2\widehat \beta \sum_{k=1}^K X_k^\top y_k + \widehat\beta \left( \sum_{k=1}^K X_k^\top X_k\right)\widehat\beta
+\end{align*} P-values and t-statistics can be computed using these
+estimated values. After the calculation of all the coefficients and
+corresponding variances, we conduct a t-test to test the significance of
+each coefficient.
+
+\hypertarget{fl-package-mk}{%
+\subsection{FL Package (MK)}\label{fl-package-mk}}
+
+We created a federated learning package ``FL'' that is hosted on github.
+This package facilitates the federated learning analysis in a modular
+format with 3 key functions. The first function (``FL\_local\_summary'')
+takes in a csv input which includes the specified data set as well as
+the desired regression formula. It then runs the local server analysis
+with a clean output of all the summary statistics. The local servers
+will then send that summary output to the central server with no
+additional work. The package will facilitate this through the use of an
+R Shiny app (to be discussed in detail later). The second function
+(``FL\_combine'') is designed to be used at the central server level and
+combines all the summary statistics from the local servers as described
+earlier in the report. The input is the exact output from
+``FL\_local\_summary''. The third function (``FL'') runs the federated
+learning analysis to produce the results of the study. The input for
+this function is the exact output from ``the second
+function''FL\_combine''. This seamless integration of inputs and outputs
+allows the FL package to run a complete federated learning analysis.
+
+\hypertarget{dataset-jt}{%
+\subsection{Dataset (JT)}\label{dataset-jt}}
+
+\hypertarget{application-and-results}{%
+\section{Application and Results}\label{application-and-results}}
+
+\hypertarget{r-shiny-jt}{%
+\subsection{R shiny (JT)}\label{r-shiny-jt}}
+
+\hypertarget{results---proof-that-fl-worked-mk}{%
+\subsection{Results - proof that FL worked
+(MK)}\label{results---proof-that-fl-worked-mk}}
+
+Our project treated different insurance companies as the local servers
+and used the equation {[}***{]}. For all five local servers we ran the
+``FL\_local\_summary'' function and sent only the summary statistics to
+the central server. We then ran the ``FL\_combine'' function. Finally,
+we ran the ``FL'' function and got the results below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(FL)}
+\FunctionTok{data}\NormalTok{(Aetna)}
+\FunctionTok{data}\NormalTok{(Blue.cross)}
+\FunctionTok{data}\NormalTok{(Cigna)}
+\FunctionTok{data}\NormalTok{(healthcare\_dataset)}
+\FunctionTok{data}\NormalTok{(Medicare)}
+\FunctionTok{data}\NormalTok{(UnitedHealthcare)}
+\NormalTok{Aetna.Sum }\OtherTok{=} \FunctionTok{FL\_local\_summary}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Billing Amount}\StringTok{\textasciigrave{}} \SpecialCharTok{\textasciitilde{}}\NormalTok{ Age }\SpecialCharTok{+}\NormalTok{ (Age}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ Gender }\SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}} \SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Admission Type}\StringTok{\textasciigrave{}} \SpecialCharTok{+}\NormalTok{ Medication }\SpecialCharTok{+}\NormalTok{ length.of.stay }\SpecialCharTok{+}\NormalTok{ length.of.stay}\SpecialCharTok{*}\StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}}\NormalTok{, Aetna)}
+\NormalTok{United.Sum }\OtherTok{=} \FunctionTok{FL\_local\_summary}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Billing Amount}\StringTok{\textasciigrave{}} \SpecialCharTok{\textasciitilde{}}\NormalTok{ Age }\SpecialCharTok{+}\NormalTok{ (Age}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ Gender }\SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}} \SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Admission Type}\StringTok{\textasciigrave{}} \SpecialCharTok{+}\NormalTok{ Medication }\SpecialCharTok{+}\NormalTok{ length.of.stay }\SpecialCharTok{+}\NormalTok{ length.of.stay}\SpecialCharTok{*}\StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}}\NormalTok{, UnitedHealthcare)}
+\NormalTok{Bluecross.Sum }\OtherTok{=} \FunctionTok{FL\_local\_summary}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Billing Amount}\StringTok{\textasciigrave{}} \SpecialCharTok{\textasciitilde{}}\NormalTok{ Age }\SpecialCharTok{+}\NormalTok{ (Age}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ Gender }\SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}} \SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Admission Type}\StringTok{\textasciigrave{}} \SpecialCharTok{+}\NormalTok{ Medication }\SpecialCharTok{+}\NormalTok{ length.of.stay }\SpecialCharTok{+}\NormalTok{ length.of.stay}\SpecialCharTok{*}\StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}}\NormalTok{, Blue\_cross)}
+\NormalTok{Cigna.Sum }\OtherTok{=} \FunctionTok{FL\_local\_summary}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Billing Amount}\StringTok{\textasciigrave{}} \SpecialCharTok{\textasciitilde{}}\NormalTok{ Age }\SpecialCharTok{+}\NormalTok{ (Age}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ Gender }\SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}} \SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Admission Type}\StringTok{\textasciigrave{}} \SpecialCharTok{+}\NormalTok{ Medication }\SpecialCharTok{+}\NormalTok{ length.of.stay }\SpecialCharTok{+}\NormalTok{ length.of.stay}\SpecialCharTok{*}\StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}}\NormalTok{, Cigna)}
+\NormalTok{Medicare.Sum }\OtherTok{=} \FunctionTok{FL\_local\_summary}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Billing Amount}\StringTok{\textasciigrave{}} \SpecialCharTok{\textasciitilde{}}\NormalTok{ Age }\SpecialCharTok{+}\NormalTok{ (Age}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ Gender }\SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}} \SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Admission Type}\StringTok{\textasciigrave{}} \SpecialCharTok{+}\NormalTok{ Medication }\SpecialCharTok{+}\NormalTok{ length.of.stay }\SpecialCharTok{+}\NormalTok{ length.of.stay}\SpecialCharTok{*}\StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}}\NormalTok{, Medicare)}
+
+
+\DocumentationTok{\#\#output below will be Aetna}
+\FunctionTok{FL\_local\_summary}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Billing Amount}\StringTok{\textasciigrave{}} \SpecialCharTok{\textasciitilde{}}\NormalTok{ Age }\SpecialCharTok{+}\NormalTok{ Gender }\SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}} \SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Admission Type}\StringTok{\textasciigrave{}} \SpecialCharTok{+}\NormalTok{ Medication }\SpecialCharTok{+}\NormalTok{ length.of.stay, Aetna)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $xtx
+##                      (Intercept)     Age Gender1 `Medical Condition`1
+## (Intercept)                 2025  105137      -1                   -7
+## Age                       105137 6249417     399                 -870
+## Gender1                       -1     399    2025                   -3
+## `Medical Condition`1          -7    -870      -3                  623
+## `Medical Condition`2          53    2964       9                  315
+## `Medical Condition`3          47    1800      21                  315
+## `Medical Condition`4           9     568      -1                  315
+## `Medical Condition`5          33     787      15                  315
+## `Admission Type`1             -1    -626      -9                   34
+## `Admission Type`2             46    2494      -4                   22
+## Medication1                    9     151      47                   -1
+## Medication2                   -1     -56      39                  -11
+## Medication3                   37    2007      79                   10
+## Medication4                  -35   -1770      19                  -10
+## length.of.stay             33655 1752804    -241                  348
+##                      `Medical Condition`2 `Medical Condition`3
+## (Intercept)                            53                   47
+## Age                                  2964                 1800
+## Gender1                                 9                   21
+## `Medical Condition`1                  315                  315
+## `Medical Condition`2                  683                  315
+## `Medical Condition`3                  315                  677
+## `Medical Condition`4                  315                  315
+## `Medical Condition`5                  315                  315
+## `Admission Type`1                      40                   10
+## `Admission Type`2                       4                  -11
+## Medication1                            10                    4
+## Medication2                            12                   14
+## Medication3                            16                   22
+## Medication4                            -5                    7
+## length.of.stay                       1223                 1076
+##                      `Medical Condition`4 `Medical Condition`5
+## (Intercept)                             9                   33
+## Age                                   568                  787
+## Gender1                                -1                   15
+## `Medical Condition`1                  315                  315
+## `Medical Condition`2                  315                  315
+## `Medical Condition`3                  315                  315
+## `Medical Condition`4                  639                  315
+## `Medical Condition`5                  315                  663
+## `Admission Type`1                      31                   22
+## `Admission Type`2                      23                   -4
+## Medication1                            20                    0
+## Medication2                            -2                   -2
+## Medication3                            15                   10
+## Medication4                            -4                   -5
+## length.of.stay                        498                  588
+##                      `Admission Type`1 `Admission Type`2 Medication1
+## (Intercept)                         -1                46           9
+## Age                               -626              2494         151
+## Gender1                             -9                -4          47
+## `Medical Condition`1                34                22          -1
+## `Medical Condition`2                40                 4          10
+## `Medical Condition`3                10               -11           4
+## `Medical Condition`4                31                23          20
+## `Medical Condition`5                22                -4           0
+## `Admission Type`1                 1319               660          38
+## `Admission Type`2                  660              1366          19
+## Medication1                         38                19         815
+## Medication2                          0                 2         403
+## Medication3                         13                -9         403
+## Medication4                        -12               -26         403
+## length.of.stay                     504               994         304
+##                      Medication2 Medication3 Medication4 length.of.stay
+## (Intercept)                   -1          37         -35          33655
+## Age                          -56        2007       -1770        1752804
+## Gender1                       39          79          19           -241
+## `Medical Condition`1         -11          10         -10            348
+## `Medical Condition`2          12          16          -5           1223
+## `Medical Condition`3          14          22           7           1076
+## `Medical Condition`4          -2          15          -4            498
+## `Medical Condition`5          -2          10          -5            588
+## `Admission Type`1              0          13         -12            504
+## `Admission Type`2              2          -9         -26            994
+## Medication1                  403         403         403            304
+## Medication2                  805         403         403            -68
+## Medication3                  403         843         403            519
+## Medication4                  403         403         771           -260
+## length.of.stay               -68         519        -260         710221
+## 
+## $xty
+##                               [,1]
+## (Intercept)           5.232179e+07
+## Age                   2.718730e+09
+## Gender1              -1.044303e+06
+## `Medical Condition`1 -6.183914e+05
+## `Medical Condition`2  8.878302e+05
+## `Medical Condition`3  1.308479e+06
+## `Medical Condition`4  4.273893e+05
+## `Medical Condition`5  9.700414e+05
+## `Admission Type`1    -1.366654e+05
+## `Admission Type`2     4.913791e+05
+## Medication1          -4.630938e+04
+## Medication2          -1.395402e+02
+## Medication3           9.037244e+05
+## Medication4          -9.832097e+05
+## length.of.stay        8.651624e+08
+## 
+## $yty
+##              [,1]
+## [1,] 1.755397e+12
+## 
+## $n
+## [1] 2025
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{combine.sum }\OtherTok{=} \FunctionTok{FL\_combine}\NormalTok{(}\FunctionTok{list}\NormalTok{(Aetna.Sum, United.Sum, Cigna.Sum, Medicare.Sum, Bluecross.Sum))}
+
+\NormalTok{FL }\OtherTok{=} \FunctionTok{FL}\NormalTok{(combine.sum)}
+\NormalTok{FL}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                         Estimate Std..Error    t.value
+## (Intercept)                         26192.917241 477.214611 54.8870815
+## Age                                    -6.625233   7.179529 -0.9227950
+## Gender1                               -37.973863 140.626235 -0.2700340
+## `Medical Condition`1                 -817.780099 693.926155 -1.1784829
+## `Medical Condition`2                  295.172405 670.970117  0.4399189
+## `Medical Condition`3                  323.566749 672.322640  0.4812671
+## `Medical Condition`4                 -789.746638 694.990247 -1.1363420
+## `Medical Condition`5                  293.575942 674.193343  0.4354477
+## `Admission Type`1                     373.042973 200.314556  1.8622859
+## `Admission Type`2                    -816.190687 198.372289 -4.1144390
+## Medication1                           259.492358 283.087399  0.9166510
+## Medication2                           -77.650785 282.470749 -0.2748985
+## Medication3                           592.261957 280.392016  2.1122640
+## Medication4                          -383.727518 283.366577 -1.3541735
+## length.of.stay                        -19.935163  16.333779 -1.2204869
+## `Medical Condition`1:length.of.stay    28.789287  36.559049  0.7874736
+## `Medical Condition`2:length.of.stay   -25.705534  36.025821 -0.7135308
+## `Medical Condition`3:length.of.stay   -17.416258  36.119341 -0.4821865
+## `Medical Condition`4:length.of.stay    81.003284  37.300866  2.1716194
+## `Medical Condition`5:length.of.stay   -37.866527  36.280305 -1.0437213
+##                                          p.value
+## (Intercept)                         0.000000e+00
+## Age                                 3.561364e-01
+## Gender1                             7.871397e-01
+## `Medical Condition`1                2.386322e-01
+## `Medical Condition`2                6.600054e-01
+## `Medical Condition`3                6.303372e-01
+## `Medical Condition`4                2.558407e-01
+## `Medical Condition`5                6.632469e-01
+## `Admission Type`1                   6.259217e-02
+## `Admission Type`2                   3.912401e-05
+## Medication1                         3.593477e-01
+## Medication2                         7.833999e-01
+## Medication3                         3.468859e-02
+## Medication4                         1.757117e-01
+## length.of.stay                      2.223092e-01
+## `Medical Condition`1:length.of.stay 4.310234e-01
+## `Medical Condition`2:length.of.stay 4.755340e-01
+## `Medical Condition`3:length.of.stay 6.296841e-01
+## `Medical Condition`4:length.of.stay 2.990786e-02
+## `Medical Condition`5:length.of.stay 2.966396e-01
+\end{verbatim}
+
+To prove that our federated learning process was a success we ran the
+well established lm() function on the oracle (combined) dataset and
+compared the results to our federated learning process. As can be seen
+below, we have exact matches in the desired statistic
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oracle }\OtherTok{=} \FunctionTok{lm}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Billing Amount}\StringTok{\textasciigrave{}} \SpecialCharTok{\textasciitilde{}}\NormalTok{ Age }\SpecialCharTok{+}\NormalTok{ (Age}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ Gender }\SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}} \SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Admission Type}\StringTok{\textasciigrave{}} \SpecialCharTok{+}\NormalTok{ Medication }\SpecialCharTok{+}\NormalTok{ length.of.stay }\SpecialCharTok{+}\NormalTok{ length.of.stay}\SpecialCharTok{*}\StringTok{\textasciigrave{}}\AttributeTok{Medical Condition}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{data =}\NormalTok{ healthcare\_dataset)}
+\NormalTok{oraclesum }\OtherTok{=} \FunctionTok{summary}\NormalTok{(oracle)}
+
+\FunctionTok{all.equal}\NormalTok{(}\FunctionTok{unname}\NormalTok{(}\FunctionTok{coef}\NormalTok{(oracle)),FL}\SpecialCharTok{$}\NormalTok{Estimate)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{all.equal}\NormalTok{(}\FunctionTok{unname}\NormalTok{(oraclesum}\SpecialCharTok{$}\NormalTok{coefficients[, }\StringTok{"Std. Error"}\NormalTok{]),FL}\SpecialCharTok{$}\NormalTok{Std..Error)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{all.equal}\NormalTok{(}\FunctionTok{unname}\NormalTok{(oraclesum}\SpecialCharTok{$}\NormalTok{coefficients[, }\StringTok{"t value"}\NormalTok{]),FL}\SpecialCharTok{$}\NormalTok{t.value)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{all.equal}\NormalTok{(}\FunctionTok{unname}\NormalTok{(oraclesum}\SpecialCharTok{$}\NormalTok{coefficients[, }\StringTok{"Pr(\textgreater{}|t|)"}\NormalTok{]),FL}\SpecialCharTok{$}\NormalTok{p.value)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\hypertarget{discussion-and-limitations-mk-ja}{%
+\section{Discussion and Limitations (MK \&
+JA)}\label{discussion-and-limitations-mk-ja}}
+
+Our package and federated learning in general has some limitations.
+Model diagnostics are difficult to carry out on the scale of complete
+data, but they may be done at the individual user, group, or site level
+utilizing subsets of data which will be a little difficult to generalize
+to the whole model in the central server. Verifying the quality of data
+and locating anomalies or influential data instances is difficult. Since
+more observations increase the variability of the data distribution, an
+outlier in a local data set may not always represent an outlier in the
+entire set. The flexibility of data analysis operations at individual
+users'/sites is limited since all users/sites are needed to concur on
+gathering the same data and doing the same analysis in order to provide
+the necessary statistics. Additionally, a federated learning analysis
+requires trust in the local level statisticians as their analysis up to
+the summary statistics cannot be seen by the central server. Our package
+mitigates the risk of statistician error by only requiring local servers
+to format data into the input csv format. Data organization has far
+lower risk than data analysis which is done completely by the FL
+package. Additionally, incorrect formatting will lead to an error
+message providing the local servers an opportunity to correct any
+mistakes made. Out package is also scalable, in that we can easily add
+additional local servers or update the desired regression formula.\\
+By using federated learning via the FL package researchers are able to
+collect far more data than otherwise available as data privacy issues
+are controlled through the federated learning technique.
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\begin{itemize}
+\item
+  Yang, H., Lam, K., Xiao, L., Xiong, Z., Hu, H., Niyato, D., \& Poor,
+  H. V. (2022, July 25). \emph{Lead federated neuromorphic learning for
+  wireless edge artificial intelligence}.
+  \href{https://scite.ai/reports/10.1038/s41467-022-32020-w}{Scientific
+  Reports, 12(1), 13540}
+\item
+  Shastri, Y. (2023, April 20). \emph{A Step-by-Step Guide to Federated
+  Learning in Computer Vision}. {[}V7
+  Blog{]}(\url{https://www.v7labs.com/blog/federated-learning-guide\#}:\textasciitilde:text=Federated\%20learning\%20(often\%20referred\%20to,model\%20locally\%2C\%20increasing\%20data\%20privacy.)
+\item
+  Song, P. (2023). \emph{Federated Statistical Learning and Distributed
+  Computing} {[}PowerPoint slides{]}. BIOSTAT 620, University of
+  Michigan, Ann Arbor, MI.
+\end{itemize}
+
+\hypertarget{appendix}{%
+\section{Appendix}\label{appendix}}
+
+\hypertarget{network-diagram}{%
+\subsection{Network Diagram}\label{network-diagram}}
+
+\end{document}

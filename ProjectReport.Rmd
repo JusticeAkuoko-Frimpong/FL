@@ -50,11 +50,19 @@ P-values and t-statistics can be computed using these estimated values. After th
 
 
 ## FL Package (MK)
-We created a federated learning package “FL” that is hosted on github.  This package facilitates the federated learning analysis in a modular format with 3 key functions. 
-The first function (“FL_local_summary”) takes in a csv input which includes the specified data set as well as the desired regression formula.  It then runs the local server analysis with a clean output of all the summary statistics.  The local servers will then send that summary output to the central server with no additional work.  The package will facilitate this through the use of an R Shiny app (to be discussed in detail later).
-The second function (“FL_combine”) is designed to be used at the central server and combines all the summary statistics from the local servers as described earlier in the report.  The only inputs necessary are the direct outputs from the first function.
-The third function (“FL”) runs the federated learning analysis to produce the results of the study.  The input for this function is the output from the second function.
-Having these functions integrated into each other allows for our analysis to be run in a seamless way with reduced risk of error.
+We created a federated learning package “FL” that is hosted on github.  This package facilitates the federated learning analysis in a modular format with 3 key functions.\newline 
+
+
+The first function (“FL_local_summary”) takes in a csv input which includes the specified data set as well as the desired regression formula.  It then runs the local server analysis with a clean output of all the summary statistics.  The local servers will then send that summary output to the central server with no additional work.  The package will facilitate this through the use of an R Shiny app (to be discussed in detail later).\newline
+
+
+The second function (“FL_combine”) is designed to be used at the central server level and combines all the summary statistics from the local servers as described earlier in the report.  The input is the exact output from "FL_local_summary". \newline
+
+
+The third function (“FL”) runs the federated learning analysis to produce the results of the study.  The input for this function is the exact output from "the second function"FL_combine".\newline
+
+
+This seamless integration of inputs and outputs allows the FL package to run a complete federated learning analysis.
 
 
 ## Dataset (JT)
@@ -64,14 +72,29 @@ Having these functions integrated into each other allows for our analysis to be 
 ## R shiny (JT)
 
 ## Results - proof that FL worked (MK)
-Our project treated different insurance companies as the central server and used the equation [***].  For all 5 local servers we ran the “FL_local_sumamry” function and sent only the summary statistics to the central server.  We then ran the “FL_combine” function.  Finally, we ran the “FL” function and got the results below.
+Our project treated different insurance companies as the local servers and used the equation [***].  For all five local servers we ran the “FL_local_summary” function and sent only the summary statistics to the central server.  We then ran the “FL_combine” function.  Finally, we ran the “FL” function and got the results below. \newline
 
-```{r}
-Aetna.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Aetna)
-United.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, UnitedHealthcare)
-Bluecross.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Blue.cross)
-Cigna.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Cigna)
-Medicare.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Medicare)
+
+
+```{r, echo=FALSE}
+library(FL)
+data(Aetna)
+Aetna$Agesq = (Aetna$Age)^2
+data(Blue.cross)
+Blue_cross$Agesq = (Blue_cross$Age)^2
+data(Cigna)
+Cigna$Agesq = (Cigna$Age)^2
+data(healthcare_dataset)
+healthcare_dataset$Agesq = (healthcare_dataset$Age)^2
+data(Medicare)
+Medicare$Agesq = (Medicare$Age)^2
+data(UnitedHealthcare)
+UnitedHealthcare$Agesq = (UnitedHealthcare$Age)^2
+Aetna.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Aetna)
+United.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, UnitedHealthcare)
+Bluecross.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Blue_cross)
+Cigna.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Cigna)
+Medicare.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Medicare)
 
 
 ##output below will be Aetna
@@ -79,15 +102,45 @@ FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admiss
 
 combine.sum = FL_combine(list(Aetna.Sum, United.Sum, Cigna.Sum, Medicare.Sum, Bluecross.Sum))
 
-FL(combine.sum)
+FL = FL(combine.sum)
+FL
 ```
-To prove that our federated learning process was a success we ran the well established lm() function on the oracle (combined) dataset and compared the results to our federated learning process.  As can be seen below, we have exact matches in the desired statistice
+To prove that our federated learning process was a success we ran the well established lm() function on the oracle (combined) dataset and compared the results to our federated learning process.  As can be seen below, we have exact matches in the desired statistic. (Full table at the end)\newline
 
 
-```{r}
-oracle = lm(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, data = full_data)
+
+
+```{r, echo=FALSE}
+library(knitr)
+library(kableExtra)
+
+oracle = lm(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, data = healthcare_dataset)
 oraclesum = summary(oracle)
 
+all.equal(unname(coef(oracle)),FL$Estimate)
+all.equal(unname(oraclesum$coefficients[, "Std. Error"]),FL$Std..Error)
+all.equal(unname(oraclesum$coefficients[, "t value"]),FL$t.value)
+all.equal(unname(oraclesum$coefficients[, "Pr(>|t|)"]),FL$p.value)
+
+col_names = c("Estimate", "Std. Error", "t value", "p value")
+
+data = data.frame(unname(coef(oracle)), FL$Estimate, unname(oraclesum$coefficients[, "Std. Error"]), FL$Std..Error,
+                  unname(oraclesum$coefficients[, "t value"]),FL$t.value, unname(oraclesum$coefficients[, "Pr(>|t|)"])
+                  ,FL$p.value)
+
+data_oracle = data.frame(unname(coef(oracle)), unname(oraclesum$coefficients[, "Std. Error"]),unname(oraclesum$coefficients[, "t value"]), unname(oraclesum$coefficients[, "Pr(>|t|)"]) )
+  
+data_FL = data.frame(FL$Estimate, FL$Std..Error, FL$t.value, FL$p.value) 
+
+colnames(data_FL) = col_names
+colnames(data_oracle) = col_names
+
+data_FL = round(data_FL,2)
+data_oracle = round(data_oracle,2)
+
+
+```
+```{r}
 all.equal(unname(coef(oracle)),FL$Estimate)
 all.equal(unname(oraclesum$coefficients[, "Std. Error"]),FL$Std..Error)
 all.equal(unname(oraclesum$coefficients[, "t value"]),FL$t.value)
@@ -96,10 +149,16 @@ all.equal(unname(oraclesum$coefficients[, "Pr(>|t|)"]),FL$p.value)
 
 
 
-# Discussion and Limitations (MK & JA)
+# Discussion and Limitations (MK & JA)  
 
-Our package and federated learning in general have some limitaions. Model diagnostics are difficult to carry out on the scale of complete data, but they may be done at the individual user, group, or site level utilizing subsets of data which will be a little difficult to generalize to the whole model in the central server. Verifying the quality of data and locating anomalies or influential data instances is difficult. Since more observations increase the variability of the data distribution, an outlier in a local data set may not always represent an outlier in the entire set.
-The flexibility of data analysis operations at individual users'/sites is limited since all users/sites are needed to concur on gathering the same data and doing the same analysis in order to provide the necessary statistics.
+Our package and federated learning in general has some limitations. Model diagnostics are difficult to carry out on the scale of complete data, but they may be done at the individual user, group, or site level utilizing subsets of data which will be a little difficult to generalize to the whole model in the central server. Verifying the quality of data and locating anomalies or influential data instances is difficult. Since more observations increase the variability of the data distribution, an outlier in a local data set may not always represent an outlier in the entire set.  The flexibility of data analysis operations at individual users'/sites is limited since all users/sites are needed to concur on gathering the same data and doing the same analysis in order to provide the necessary statistics. Additionally, a federated learning analysis requires trust in the local level statisticians as their analysis up to the summary statistics cannot be seen by the central server.\newline
+
+
+Our package mitigates the risk of statistician error by only requiring local servers to format data into the input csv format. Data organization has far lower risk than data analysis which is done completely by the FL package.  Additionally, incorrect formatting will lead to an error message providing the local servers an opportunity to correct any mistakes made. Out package is also scalable, in that we can easily add additional local servers or update the desired regression formula.  \newline
+
+
+By using federated learning via the FL package researchers are able to collect far more data than otherwise available as data privacy issues are controlled through the federated learning technique.
+
  
 # References 
 
@@ -139,5 +198,11 @@ grViz("
     E -> A [label = 'Updates', color = blue]
   }"
 )
+```
+
+## Federated Learning vs. Oracle Summary
+```{r}
+kable(list(data_FL, data_oracle), caption = "Federated learning (left) vs. Oracle (right)", align = "c") %>%
+  kable_styling(full_width = FALSE) 
 ```
 
