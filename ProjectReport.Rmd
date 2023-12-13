@@ -9,22 +9,47 @@ output:
 always_allow_html: yes
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(tidy = TRUE)
+```
+
+
+```{r, include=FALSE}
+library(table1)
+library(dplyr)
+library(kableExtra)
+library(knitr)
+library(FL)
+library(DiagrammeR)
+```
+
+
 # Introduction 
 
-1) general intro (JT)
+For insurance companies and customers, it is important to understand what factors contribute to any medical bill amounts for hospital stays. This information would help customers budget for planned or emergency treatments. It would also help insurance companies make decisions about what to cover and what premiums are necessary to profit from covering certain medications, treatments, etc. With this motivation in mind, the goal of our proposed study would be to make inferences about the factors associated with billing amounts.
+
+Some studies have already examined influences on hospital billings in more specific contexts. Gender and type of care have been linked to daily intensive care unit costs (Dasta et al., 2005). In addition, a study by Gams et al. (2017) demonstrated associations between severe odontogenic infection hospitalization costs and age, use of antibiotics, and diabetes status. Length of stay was included, as well, because of how variable it can be in the context of general hospital admissions, as opposed to looking at admissions for a specific condition or treatment. An interaction term was also added between length of stay and medical condition to test if the relationship between length of stay and cost was influenced by the medical condition.
+
+According to the American Hospital Association (2023), there were over 34 million hospital admissions in the US between January and May of 2023. With such an abundance of data, it might seem that answering these questions could be done by obtaining hospital admissions and billing data from the insurance companies. However, insurance companies must protect patient privacy and adhere to the Health Insurance Portability and Accountability Act of 1996, also known as HIPAA.
+
+Federated learning solves the issue of protecting patient data while also allowing insurance companies to share data with us for our analysis. We created an R package and Shiny app to perform a linear regression using federated learning. With our Shiny app, insurance companies can produce the necessary summary statistics from their hospital admissions data. The functions in our package can then generate the same regression results that would be obtained using the patient-level data, using only the summary statistics.
 
 # Methods
 
-## Federated learning math theory (JA)
+## Federated learning math theory
 
-Federated Learning is an emerging machine learning paradigm that aims to train a collaborative model while keeping all the training data localized (Yang et al., 2022). Data communication from client devices to global servers is not necessary. Rather, the model is trained locally using the raw data on edge devices, hence improving data privacy. The local modifications are aggregated to build the final model in a shared way.\newline
+Federated Learning is an emerging machine learning paradigm that aims to train a collaborative model while keeping all the training data localized (Yang et al., 2022). Data communication from client devices to global servers is not necessary. Rather, the model is trained locally using the raw data on edge devices, hence improving data privacy. The local modifications are aggregated to build the final model in a shared way.
+
 In clinical settings, to maintain patient data security, federated learning still has to be implemented carefully. However, it has the potential to tackle some of the challenges we faced by approaches that require the pooling of sensitive clinical data.
 Clinical data can be collected inside an institution's security safeguards for federated learning. Each individual maintains ownership of their own clinical data.
 Federated learning allows teams to create bigger, more varied datasets for algorithm training, even as it becomes more difficult to retrieve sensitive patient data as a result.
 By using a federated learning strategy, various healthcare facilities, research institutes, and hospitals are also encouraged to work together to create a model that might be advantageous to all of them.Here are some reasons why federated learning matters (Shastri, 2023):
 
-\textbf{Privacy}: Federated learning allows training to happen locally, avoiding potential data breaches, in contrast to traditional approaches that send data to a central server for training.\newline
-\textbf{Data security}: is ensured by sharing only summary statistics updates with the central server.\newline
+\textbf{Privacy}: Federated learning allows training to happen locally, avoiding potential data breaches, in contrast to traditional approaches that send data to a central server for training.
+\textbf{Data security}: is ensured by sharing only summary statistics updates with the central server.
 \textbf{Access to heterogeneous data}: is ensured via federated learning, which makes data dispersed across many companies, places, and devices accessible. It allows for secure and private training of models on sensitive data, like financial or medical data. Additionally, models may be made more generalizable with increased data diversity.
 
 ### How does federated learning work? 
@@ -33,11 +58,11 @@ Once the model in the central server has been re-trained with the new summary st
 
 
 ### Fitting a linear regression model
-Suppose we have $k$ groups in a study. Each group has different data but identical columns. To answer a research question with a linear regression model, assume independence of the responses from individuals across the k groups. The coefficients for the regression can computed using the following user-specific summary statistics $SSX$, $SSY$, $SSXY$, and  $n$ from all $k$  groups to obtain the estimates of the coefficients using the formula:\newline
+Suppose we have $k$ groups in a study. Each group has different data but identical columns. To answer a research question with a linear regression model, assume independence of the responses from individuals across the k groups. The coefficients for the regression can computed using the following user-specific summary statistics $SSX$, $SSY$, $SSXY$, and  $n$ from all $k$  groups to obtain the estimates of the coefficients using the formula:
 \begin{align*}
     \hat{\beta} = (\sum_{k=1}^{K} X^T_kX_k)^{-1}\times(\sum_{k=1}^{K} X^T_ky_k)
 \end{align*} 
-where $X_k$ is the design matrix and $Y_k$ is the response vector for the $k$-th group.To further evaluate the significance of the coefficients, standard errors of the estimated coefficients will be  calculated using the formula below, which is also in the federated learning form:\\
+where $X_k$ is the design matrix and $Y_k$ is the response vector for the $k$-th group.To further evaluate the significance of the coefficients, standard errors of the estimated coefficients will be  calculated using the formula below, which is also in the federated learning form:
 \begin{align*}
     \widehat{se}(\widehat{\beta}_j) = \sqrt{\widehat{\sigma}^2(X^\top X)^{-1}_{jj}}\text{, with }\widehat{\sigma}^2 = \frac{\widehat{\epsilon}^\top \widehat{\epsilon}}{n-p},
 \end{align*}
@@ -49,35 +74,57 @@ P-values and t-statistics can be computed using these estimated values. After th
 
 
 
-## FL Package (MK)
-We created a federated learning package “FL” that is hosted on github.  This package facilitates the federated learning analysis in a modular format with 3 key functions.\newline 
+## FL Package
+We created a federated learning package “FL” that is hosted on github.  This package facilitates the federated learning analysis in a modular format with 3 key functions. 
 
+The first function (“FL_local_summary”) takes in a csv input which includes the specified data set as well as the desired regression formula.  It then runs the local server analysis with a clean output of all the summary statistics.  The local servers will then send that summary output to the central server with no additional work.  The package will facilitate this through the use of an R Shiny app (to be discussed in detail later).
 
-The first function (“FL_local_summary”) takes in a csv input which includes the specified data set as well as the desired regression formula.  It then runs the local server analysis with a clean output of all the summary statistics.  The local servers will then send that summary output to the central server with no additional work.  The package will facilitate this through the use of an R Shiny app (to be discussed in detail later).\newline
+The second function (“FL_combine”) is designed to be used at the central server level and combines all the summary statistics from the local servers as described earlier in the report. The input is the exact output from "FL_local_summary".
 
-
-The second function (“FL_combine”) is designed to be used at the central server level and combines all the summary statistics from the local servers as described earlier in the report.  The input is the exact output from "FL_local_summary". \newline
-
-
-The third function (“FL”) runs the federated learning analysis to produce the results of the study.  The input for this function is the exact output from "the second function"FL_combine".\newline
-
+The third function (“FL”) runs the federated learning analysis to produce the results of the study.  The input for this function is the exact output from "the second function"FL_combine".
 
 This seamless integration of inputs and outputs allows the FL package to run a complete federated learning analysis.
 
 
-## Dataset (JT)
+## Dataset
+Table 1 below shows summary statistics for all the variables in the Aetna data set, as an example of how the local data is structured. All of the data used were simulated to appear in a manner that would be straightforward for insurance companies to provide.
+```{r, echo=FALSE}
+data(Aetna)
+table1::table1(~.,
+               data = Aetna[, c(2,3,5,10,12,14,16)],
+               caption = "Descriptive statistics for Aetna dataset") %>%
+  table1::t1kable() %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+
+Although there are a limited number of groups for the categorical variables in this simulated data, all of the functions in FL can accommodate any number of unique categories. To combine the local summary statistics, each insurance company must utilize the same categories for each variable. Collaboration with the various insurance companies to standardize how these categorical variables are reported would take place before data gathering begins.
+
 
 # Application and Results
 
-## R shiny (JT)
+## R Shiny
+The Shiny app allows insurance companies to generate all of the necessary summary statistics for the federated learning linear regression by simply uploading their data set as a csv file. Table 2 below shows all the variables and their respective types that must be contained in the csv file.
+```{r, echo=FALSE}
+names = colnames(Aetna)[c(2,3,5,10,12,14,16)]
+types = sapply(Aetna, typeof)[c(2,3,5,10,12,14,16)]
+attributes(types)$names = NULL
 
-## Results - proof that FL worked (MK)
-Our project treated different insurance companies as the local servers and used the equation [***].  For all five local servers we ran the “FL_local_summary” function and sent only the summary statistics to the central server.  We then ran the “FL_combine” function.  Finally, we ran the “FL” function and got the results below. \newline
+VarTypes = data.frame(Variables = names, Type = types)
 
+VarTypes %>%
+  kbl(caption = "Required CSV column headers and data types") %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+After the csv has been uploaded, 4 different sets of summary statistics will be generated to allow for flexibility in how the final model is constructed. The different options considered were whether to include an age-squared term (Age.Sq) and/or an interaction between Medical Condition and length.of.stay (Int). By obtaining all 4 sets of summary statistics from each company, we can later perform the hypothesis tests necessary to decide if age-squared term and the interactions should be included in the final model. The app presents the summary statistics for each potential model in separate tabs.
+
+
+## Validation
+Our project treated different insurance companies as the local servers and used the equation [***].  For all five local servers we ran the “FL_local_summary” function and sent only the summary statistics to the central server.  We then ran the “FL_combine” function.  Finally, we ran the “FL” function and got the results below.
 
 
 ```{r, echo=FALSE}
-library(FL)
 data(Aetna)
 Aetna$Agesq = (Aetna$Age)^2
 data(Blue.cross)
@@ -98,29 +145,18 @@ Medicare.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medic
 
 
 ##output below will be Aetna
-FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Aetna)
+# FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Aetna)
 
 combine.sum = FL_combine(list(Aetna.Sum, United.Sum, Cigna.Sum, Medicare.Sum, Bluecross.Sum))
 
 FL = FL(combine.sum)
-FL
 ```
-To prove that our federated learning process was a success we ran the well established lm() function on the oracle (combined) dataset and compared the results to our federated learning process.  As can be seen below, we have exact matches in the desired statistic. (Full table at the end)\newline
-
-
+To prove that our federated learning process was a success we ran the well established lm() function on the oracle (combined) dataset and compared the results to our federated learning process.  As can be seen below, we have exact matches in the desired statistic. Full linear regression results using both methods are shown in Table 3 in the Appendix.
 
 
 ```{r, echo=FALSE}
-library(knitr)
-library(kableExtra)
-
 oracle = lm(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, data = healthcare_dataset)
 oraclesum = summary(oracle)
-
-all.equal(unname(coef(oracle)),FL$Estimate)
-all.equal(unname(oraclesum$coefficients[, "Std. Error"]),FL$Std..Error)
-all.equal(unname(oraclesum$coefficients[, "t value"]),FL$t.value)
-all.equal(unname(oraclesum$coefficients[, "Pr(>|t|)"]),FL$p.value)
 
 col_names = c("Estimate", "Std. Error", "t value", "p value")
 
@@ -140,6 +176,7 @@ data_oracle = round(data_oracle,2)
 
 
 ```
+
 ```{r}
 all.equal(unname(coef(oracle)),FL$Estimate)
 all.equal(unname(oraclesum$coefficients[, "Std. Error"]),FL$Std..Error)
@@ -149,26 +186,29 @@ all.equal(unname(oraclesum$coefficients[, "Pr(>|t|)"]),FL$p.value)
 
 
 
-# Discussion and Limitations (MK & JA)  
+# Discussion and Limitations 
 
-Our package and federated learning in general has some limitations. Model diagnostics are difficult to carry out on the scale of complete data, but they may be done at the individual user, group, or site level utilizing subsets of data which will be a little difficult to generalize to the whole model in the central server. Verifying the quality of data and locating anomalies or influential data instances is difficult. Since more observations increase the variability of the data distribution, an outlier in a local data set may not always represent an outlier in the entire set.  The flexibility of data analysis operations at individual users'/sites is limited since all users/sites are needed to concur on gathering the same data and doing the same analysis in order to provide the necessary statistics. Additionally, a federated learning analysis requires trust in the local level statisticians as their analysis up to the summary statistics cannot be seen by the central server.\newline
+Our package and federated learning in general has some limitations. Model diagnostics are difficult to carry out on the scale of complete data, but they may be done at the individual user, group, or site level utilizing subsets of data which will be a little difficult to generalize to the whole model in the central server. Verifying the quality of data and locating anomalies or influential data instances is difficult. Since more observations increase the variability of the data distribution, an outlier in a local data set may not always represent an outlier in the entire set.  The flexibility of data analysis operations at individual users'/sites is limited since all users/sites are needed to concur on gathering the same data and doing the same analysis in order to provide the necessary statistics. Additionally, a federated learning analysis requires trust in the local level statisticians as their analysis up to the summary statistics cannot be seen by the central server.
 
-
-Our package mitigates the risk of statistician error by only requiring local servers to format data into the input csv format. Data organization has far lower risk than data analysis which is done completely by the FL package.  Additionally, incorrect formatting will lead to an error message providing the local servers an opportunity to correct any mistakes made. Out package is also scalable, in that we can easily add additional local servers or update the desired regression formula.  \newline
-
+Our package mitigates the risk of statistician error by only requiring local servers to format data into the input csv format. Data organization has far lower risk than data analysis which is done completely by the FL package.  Additionally, incorrect formatting will lead to an error message providing the local servers an opportunity to correct any mistakes made. Out package is also scalable, in that we can easily add additional local servers or update the desired regression formula.
 
 By using federated learning via the FL package researchers are able to collect far more data than otherwise available as data privacy issues are controlled through the federated learning technique.
 
  
 # References 
 
-- Yang, H., Lam, K., Xiao, L., Xiong, Z., Hu, H., Niyato, D., & Poor, H. V. (2022, July 25). *Lead federated neuromorphic learning for wireless edge artificial intelligence*. [Scientific Reports, 12(1), 13540](https://scite.ai/reports/10.1038/s41467-022-32020-w)
+- American Hospital Association (2023, May). *Fast facts on U.S. Hospitals*. (https://www.aha.org/statistics/fast-facts-us-hospitals)
 
-- Shastri, Y. (2023, April 20). *A Step-by-Step Guide to Federated Learning in Computer Vision*. [V7 Blog](https://www.v7labs.com/blog/federated-learning-guide#:~:text=Federated%20learning%20(often%20referred%20to,model%20locally%2C%20increasing%20data%20privacy.)
+- Dasta, J. F., McLaughlin, T. P., Mody, S. H., & Piech, C. T. (2005, June). *Daily cost of an intensive care unit day: The contribution of mechanical ventilation*. [Critical Care Medicine, 33(6), 1266-1271]. DOI: 10.1097/01.CCM.0000164543.14619.00.
+
+- Gams, K., Shewale, J., Demian, N., Khalil, K. & Banki, F. (2017, April). *Characteristics, length of stay, and hospital bills associated with severe odontogenic infections in Houston, TX*. [Journal of the American Dental Association, 148(4), 221-229] (https://doi.org/10.1016/j.adaj.2016.11.033)
+
+- Shastri, Y. (2023, April 20). *A Step-by-Step Guide to Federated Learning in Computer Vision*. [V7 Blog] (https://www.v7labs.com/blog/federated-learning-guide#:~:text=Federated%20learning%20(oft\newline
+en%20referred%20to,model%20locally%2C%20increasing%20data%20privacy.)
 
 - Song, P. (2023). *Federated Statistical Learning and Distributed Computing* [PowerPoint slides]. BIOSTAT 620, University of Michigan, Ann Arbor, MI.
 
-
+- Yang, H., Lam, K., Xiao, L., Xiong, Z., Hu, H., Niyato, D., & Poor, H. V. (2022, July 25). *Lead federated neuromorphic learning for wireless edge artificial intelligence*. [Scientific Reports, 12(1), 13540] (https://scite.ai/reports/10.1038/s41467-022-32020-w)
 
 
 
@@ -180,9 +220,6 @@ By using federated learning via the FL package researchers are able to collect f
 
 ## Network Diagram
 ```{r include_diagram, echo=FALSE, results='asis'}
-library(DiagrammeR)
-
-
 grViz("
   digraph {
     graph [layout = dot, rankdir = TB]
@@ -201,8 +238,8 @@ grViz("
 ```
 
 ## Federated Learning vs. Oracle Summary
-```{r}
+```{r, echo=FALSE}
 kable(list(data_FL, data_oracle), caption = "Federated learning (left) vs. Oracle (right)", align = "c") %>%
-  kable_styling(full_width = FALSE) 
+  kable_styling(full_width = FALSE, latex_options = "HOLD_position") 
 ```
 
