@@ -76,19 +76,25 @@ Our project treated different insurance companies as the local servers and used 
 
 
 
-```{r}
+```{r, echo=FALSE}
 library(FL)
 data(Aetna)
+Aetna$Agesq = (Aetna$Age)^2
 data(Blue.cross)
+Blue_cross$Agesq = (Blue_cross$Age)^2
 data(Cigna)
+Cigna$Agesq = (Cigna$Age)^2
 data(healthcare_dataset)
+healthcare_dataset$Agesq = (healthcare_dataset$Age)^2
 data(Medicare)
+Medicare$Agesq = (Medicare$Age)^2
 data(UnitedHealthcare)
-Aetna.Sum = FL_local_summary(`Billing Amount` ~ Age + (Age^2) + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Aetna)
-United.Sum = FL_local_summary(`Billing Amount` ~ Age + (Age^2) + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, UnitedHealthcare)
-Bluecross.Sum = FL_local_summary(`Billing Amount` ~ Age + (Age^2) + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Blue_cross)
-Cigna.Sum = FL_local_summary(`Billing Amount` ~ Age + (Age^2) + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Cigna)
-Medicare.Sum = FL_local_summary(`Billing Amount` ~ Age + (Age^2) + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Medicare)
+UnitedHealthcare$Agesq = (UnitedHealthcare$Age)^2
+Aetna.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Aetna)
+United.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, UnitedHealthcare)
+Bluecross.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Blue_cross)
+Cigna.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Cigna)
+Medicare.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Medicare)
 
 
 ##output below will be Aetna
@@ -104,8 +110,11 @@ To prove that our federated learning process was a success we ran the well estab
 
 
 
-```{r}
-oracle = lm(`Billing Amount` ~ Age + (Age^2) + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, data = healthcare_dataset)
+```{r, echo=FALSE}
+library(knitr)
+library(kableExtra)
+
+oracle = lm(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, data = healthcare_dataset)
 oraclesum = summary(oracle)
 
 all.equal(unname(coef(oracle)),FL$Estimate)
@@ -113,17 +122,32 @@ all.equal(unname(oraclesum$coefficients[, "Std. Error"]),FL$Std..Error)
 all.equal(unname(oraclesum$coefficients[, "t value"]),FL$t.value)
 all.equal(unname(oraclesum$coefficients[, "Pr(>|t|)"]),FL$p.value)
 
+col_names = c("Estimate", "Std. Error", "t value", "p value")
+
 data = data.frame(unname(coef(oracle)), FL$Estimate, unname(oraclesum$coefficients[, "Std. Error"]), FL$Std..Error,
                   unname(oraclesum$coefficients[, "t value"]),FL$t.value, unname(oraclesum$coefficients[, "Pr(>|t|)"])
                   ,FL$p.value)
-library(knitr)
-kable(data)
+
+data_oracle = data.frame(unname(coef(oracle)), unname(oraclesum$coefficients[, "Std. Error"]),unname(oraclesum$coefficients[, "t value"]), unname(oraclesum$coefficients[, "Pr(>|t|)"]) )
+  
+data_FL = data.frame(FL$Estimate, FL$Std..Error, FL$t.value, FL$p.value) 
+
+colnames(data_FL) = col_names
+colnames(data_oracle) = col_names
+
+data_FL = round(data_FL,2)
+data_oracle = round(data_oracle,2)
+
+
 ```
-
-
 ```{r}
-##only show the table
+all.equal(unname(coef(oracle)),FL$Estimate)
+all.equal(unname(oraclesum$coefficients[, "Std. Error"]),FL$Std..Error)
+all.equal(unname(oraclesum$coefficients[, "t value"]),FL$t.value)
+all.equal(unname(oraclesum$coefficients[, "Pr(>|t|)"]),FL$p.value)
 ```
+
+
 
 # Discussion and Limitations (MK & JA)  
 
@@ -174,5 +198,11 @@ grViz("
     E -> A [label = 'Updates', color = blue]
   }"
 )
+```
+
+## Federated Learning vs. Oracle Summary
+```{r}
+kable(list(data_FL, data_oracle), caption = "Federated learning (left) vs. Oracle (right)", align = "c") %>%
+  kable_styling(full_width = FALSE) 
 ```
 
