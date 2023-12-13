@@ -56,6 +56,18 @@ print(soln)
 ```
 These will return a dataframe of the estimates of the regression coefficients, standard errors, t values, p values.
 
+### Loading the dataset
+This project includes a healthcare dataset which was simulated by Kaggle.  Additionally, that dataset has been split into insurance company specific datsets to run the federated learning analysis.  The below code with load each dataset included in this package
+```r
+data(healthcare_dataset)
+data(Aetna)
+data(Medicare)
+data(Cigna)
+data(Blue.cross)
+data(UnitedHealthcare)
+```
+
+
 ## Authors
 Justice Akuoko-Frimpong <jakuokof@umich.edu>
 Jonathan Ta <jdta@umich.edu>
