@@ -49,7 +49,9 @@ Federated learning allows teams to create bigger, more varied datasets for algor
 By using a federated learning strategy, various healthcare facilities, research institutes, and hospitals are also encouraged to work together to create a model that might be advantageous to all of them.Here are some reasons why federated learning matters (Shastri, 2023):
 
 \textbf{Privacy}: Federated learning allows training to happen locally, avoiding potential data breaches, in contrast to traditional approaches that send data to a central server for training.
+
 \textbf{Data security}: is ensured by sharing only summary statistics updates with the central server.
+
 \textbf{Access to heterogeneous data}: is ensured via federated learning, which makes data dispersed across many companies, places, and devices accessible. It allows for secure and private training of models on sensitive data, like financial or medical data. Additionally, models may be made more generalizable with increased data diversity.
 
 ### How does federated learning work? 
