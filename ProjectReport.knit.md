@@ -64,90 +64,11 @@ This seamless integration of inputs and outputs allows the FL package to run a c
 ## R shiny (JT)
 
 ## Results - proof that FL worked (MK)
-Our project treated different insurance companies as the local servers and used the equation [***].  For all five local servers we ran the “FL_local_summary” function and sent only the summary statistics to the central server.  We then ran the “FL_combine” function.  Finally, we ran the “FL” function and got the results below. 
-
-```{r}
-library(FL)
-data(Aetna)
-data(Blue.cross)
-data(Cigna)
-data(healthcare_dataset)
-data(Medicare)
-data(UnitedHealthcare)
-Aetna.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Aetna)
-United.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, UnitedHealthcare)
-Bluecross.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Blue_cross)
-Cigna.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Cigna)
-Medicare.Sum = FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Medicare)
-
-
-##output below will be Aetna
-FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Aetna)
-
-combine.sum = FL_combine(list(Aetna.Sum, United.Sum, Cigna.Sum, Medicare.Sum, Bluecross.Sum))
-
-FL = FL(combine.sum)
-FL
-```
-To prove that our federated learning process was a success we ran the well established lm() function on the oracle (combined) dataset and compared the results to our federated learning process.  As can be seen below, we have exact matches in the desired statistice
-
-
-```{r}
-oracle = lm(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, data = healthcare_dataset)
-oraclesum = summary(oracle)
-
-all.equal(unname(coef(oracle)),FL$Estimate)
-all.equal(unname(oraclesum$coefficients[, "Std. Error"]),FL$Std..Error)
-all.equal(unname(oraclesum$coefficients[, "t value"]),FL$t.value)
-all.equal(unname(oraclesum$coefficients[, "Pr(>|t|)"]),FL$p.value)
-```
-
-
-
-# Discussion and Limitations (MK & JA)  
-
-Our package and federated learning in general has some limitations. Model diagnostics are difficult to carry out on the scale of complete data, but they may be done at the individual user, group, or site level utilizing subsets of data which will be a little difficult to generalize to the whole model in the central server. Verifying the quality of data and locating anomalies or influential data instances is difficult. Since more observations increase the variability of the data distribution, an outlier in a local data set may not always represent an outlier in the entire set.  The flexibility of data analysis operations at individual users'/sites is limited since all users/sites are needed to concur on gathering the same data and doing the same analysis in order to provide the necessary statistics. Additionally, a federated learning analysis requires trust in the local level statisticians as their analysis up to the summary statistics cannot be seen by the central server.
-Our package mitigates the risk of statistician error by only requiring local servers to format data into the input csv format. Data organization has far lower risk than data analysis which is done completely by the FL package.  Additionally, incorrect formatting will lead to an error message providing the local servers an opportunity to correct any mistakes made. Out package is also scalable, in that we can easily add additional local servers or update the desired regression formula.  
-By using federated learning via the FL package researchers are able to collect far more data than otherwise available as data privacy issues are controlled through the federated learning technique.
-
- 
-# References 
-
-- Yang, H., Lam, K., Xiao, L., Xiong, Z., Hu, H., Niyato, D., & Poor, H. V. (2022, July 25). *Lead federated neuromorphic learning for wireless edge artificial intelligence*. [Scientific Reports, 12(1), 13540](https://scite.ai/reports/10.1038/s41467-022-32020-w)
-
-- Shastri, Y. (2023, April 20). *A Step-by-Step Guide to Federated Learning in Computer Vision*. [V7 Blog](https://www.v7labs.com/blog/federated-learning-guide#:~:text=Federated%20learning%20(often%20referred%20to,model%20locally%2C%20increasing%20data%20privacy.)
-
-- Song, P. (2023). *Federated Statistical Learning and Distributed Computing* [PowerPoint slides]. BIOSTAT 620, University of Michigan, Ann Arbor, MI.
+Our project treated different insurance companies as the local servers and used the equation [***].  For all five local servers we ran the “FL_local_summary” function and sent only the summary statistics to the central server.  We then ran the “FL_combine” function.  Finally, we ran the “FL” function and got the results below.
 
 
 
 
 
 
-
-
-
-# Appendix
-
-## Network Diagram
-```{r include_diagram, echo=FALSE, results='asis'}
-library(DiagrammeR)
-
-
-#grViz("
-#  digraph {
-#    graph [layout = dot, rankdir = TB]
-#    node [shape = rectangle, style = filled, color = black, fillcolor = white, fontcolor = black]
-#    A [label = 'Central Server']
-##    B [label = 'Local Server 1']
-#    C [label = 'Local Server 2']
-#    D [label = 'Local Server 3']
-#    E [label = 'Local Server 4']
-#    B -> A [label = 'Updates', color = blue]
-#    C -> A [label = 'Updates', color = blue]
-#    D -> A [label = 'Updates', color = blue]
-#    E -> A [label = 'Updates', color = blue]
-#  }"
-#)
-```
 
