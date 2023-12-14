@@ -77,7 +77,7 @@ P-values and t-statistics can be computed using these estimated values. After th
 
 
 ## FL Package
-We created a federated learning package “FL” that is hosted on github.  This package facilitates the federated learning analysis in a modular format with 3 key functions. 
+We created a federated learning package “FL” that is hosted on github (https://github.com/JusticeAkuoko-Frimpong/FL).  This package facilitates the federated learning analysis in a modular format with 3 key functions. 
 
 The first function (“FL_local_summary”) takes in a csv input which includes the specified data set as well as the desired regression formula.  It then runs the local server analysis with a clean output of all the summary statistics.  The local servers will then send that summary output to the central server with no additional work.  The package will facilitate this through the use of an R Shiny app (to be discussed in detail later).
 
@@ -123,7 +123,12 @@ After the csv has been uploaded, 4 different sets of summary statistics will be 
 
 
 ## Validation
-Our project treated different insurance companies as the local servers and used the equation [***].  For all five local servers we ran the “FL_local_summary” function and sent only the summary statistics to the central server.  We then ran the “FL_combine” function.  Finally, we ran the “FL” function and got the results below.
+Our project treated different insurance companies as the local servers and used the equation below.
+\[
+\text{{Billing Amount}} \sim \text{{Age}} + \text{{Agesq}} + \text{{Gender}} + \text{{Medical Condition}} + \text{{Admission Type}} + \text{{Medication}} + \text{{length.of.stay}} + \text{{length.of.stay}} \times \text{{Medical Condition}}
+\]
+
+For all five local servers we ran the “FL_local_summary” function and sent only the summary statistics to the central server.  We then ran the “FL_combine” function.  Finally, we ran the “FL” function and got the results below.
 
 
 ```{r, echo=FALSE}
@@ -194,7 +199,7 @@ Our package and federated learning in general has some limitations. Model diagno
 
 Our package mitigates the risk of statistician error by only requiring local servers to format data into the input csv format. Data organization has far lower risk than data analysis which is done completely by the FL package.  Additionally, incorrect formatting will lead to an error message providing the local servers an opportunity to correct any mistakes made. Out package is also scalable, in that we can easily add additional local servers or update the desired regression formula.
 
-By using federated learning via the FL package researchers are able to collect far more data than otherwise available as data privacy issues are controlled through the federated learning technique.
+By using federated learning via the FL package researchers are able to collect far more data than otherwise available as data privacy issues are controlled through the federated learning technique.\newpage
 
  
 # References 
