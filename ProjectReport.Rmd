@@ -104,9 +104,10 @@ After the csv has been uploaded, 4 different sets of summary statistics will be 
 
 ## Validation
 Our project treated different insurance companies as the local servers and used the equation below.
-\[
-\text{{Billing Amount}} \sim \text{{Age}} + \text{{Agesq}} + \text{{Gender}} + \text{{Medical Condition}} + \text{{Admission Type}} + \text{{Medication}} + \text{{length.of.stay}} + \text{{length.of.stay}} \times \text{{Medical Condition}}
-\]
+\begin{align*}
+\text{{Billing Amount}} \sim &\text{{Age}} + \text{{Agesq}} + \text{{Gender}} + \text{{Medical Condition}} + \text{{Admission Type}} + \text{{Medication}} + \text{{length.of.stay}}\\
+& + \text{{length.of.stay}} \times \text{{Medical Condition}}
+\end{align*}
 
 For all five local servers we ran the “FL_local_summary” function and sent only the summary statistics to the central server.  We then ran the “FL_combine” function.  Finally, we ran the “FL” function and got the results below.
 
@@ -129,10 +130,6 @@ United.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical
 Bluecross.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Blue_cross)
 Cigna.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Cigna)
 Medicare.Sum = FL_local_summary(`Billing Amount` ~ Age + Agesq + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay + length.of.stay*`Medical Condition`, Medicare)
-
-
-##output below will be Aetna
-# FL_local_summary(`Billing Amount` ~ Age + Gender + `Medical Condition` + `Admission Type` + Medication + length.of.stay, Aetna)
 
 combine.sum = FL_combine(list(Aetna.Sum, United.Sum, Cigna.Sum, Medicare.Sum, Bluecross.Sum))
 
@@ -195,7 +192,7 @@ en%20referred%20to,model%20locally%2C%20increasing%20data%20privacy.)
 
 - Song, P. (2023). *Federated Statistical Learning and Distributed Computing* [PowerPoint slides]. BIOSTAT 620, University of Michigan, Ann Arbor, MI.
 
-- Yang, H., Lam, K., Xiao, L., Xiong, Z., Hu, H., Niyato, D., & Poor, H. V. (2022, July 25). *Lead federated neuromorphic learning for wireless edge artificial intelligence*. [Scientific Reports, 12(1), 13540] (https://scite.ai/reports/10.1038/s41467-022-32020-w)
+- Yang, H., Lam, K., Xiao, L., Xiong, Z., Hu, H., Niyato, D., & Poor, H. V. (2022, July 25). *Lead federated neuromorphic learning for wireless edge artificial intelligence*. [Scientific Reports, 12(1), 13540] (https://scite.ai/reports/10.1038/s41467-022-32020-w) \newpage
 
 
 

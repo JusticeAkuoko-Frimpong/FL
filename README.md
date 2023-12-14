@@ -72,7 +72,7 @@ The R Shiny App is also located on Github; JusticeAkuoko-Frimpong/FL. The R Shin
 
 1. You will need to download the "csv" data files which is also located in this repository in the CSV Data folder.
 
-2.Download Shiny.R from the repository.
+2. Download Shiny.R from the repository.
 
 3. Run the Shiny.R script. This will open up the shiny app.
 
