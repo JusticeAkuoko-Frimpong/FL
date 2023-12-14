@@ -67,6 +67,19 @@ data(Blue.cross)
 data(UnitedHealthcare)
 ```
 
+# Working with the R shiny App
+The R Shiny App is also located on Github; JusticeAkuoko-Frimpong/FL. The R Shiny App inputs needs to be a "csv" file so to test this app;
+
+1. You will need to download the "csv" data files which is also located in this repository in the CSV Data folder.
+
+2.Download Shiny.R from the repository.
+
+3. Run the Shiny.R script. This will open up the shiny app.
+
+4. Click "Browse..." and select the csv file you want to upload.
+
+The app gives an output of the summary statistics from the dataset needed for fitting the models in the central server.
+
 
 ## Authors
 Justice Akuoko-Frimpong <jakuokof@umich.edu>

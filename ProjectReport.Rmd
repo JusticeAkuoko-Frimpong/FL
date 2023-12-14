@@ -252,3 +252,18 @@ VarTypes %>%
 kable(list(data_FL, data_oracle), caption = "Federated learning (left) vs. Oracle (right)", align = "c") %>%
   kable_styling(full_width = FALSE, latex_options = "HOLD_position") 
 ```
+
+
+# Contributions
+
+## Justice Akuoko-Frimpong
+
+Coded the FL functions, worked on the FL package, contributed to the report.
+
+## Michael Kaye
+
+Was in charge of putting together the FL package, contributed to report.
+
+## Jonathan Ta
+
+Created the Shiny app, contributed to report.
