@@ -89,16 +89,7 @@ This seamless integration of inputs and outputs allows the FL package to run a c
 
 
 ## Dataset
-Table 1 below shows summary statistics for all the variables in the Aetna data set, as an example of how the local data is structured. All of the data used were simulated to appear in a manner that would be straightforward for insurance companies to provide.
-```{r, echo=FALSE}
-data(Aetna)
-table1::table1(~.,
-               data = Aetna[, c(2,3,5,10,12,14,16)],
-               caption = "Descriptive statistics for Aetna dataset") %>%
-  table1::t1kable() %>%
-  kable_styling(latex_options = "HOLD_position")
-```
-
+Table 1 in the appendix shows summary statistics for all the variables in the Aetna data set, as an example of how the local data is structured. All of the data used were simulated to appear in a manner that would be straightforward for insurance companies to provide.\newline
 
 Although there are a limited number of groups for the categorical variables in this simulated data, all of the functions in FL can accommodate any number of unique categories. To combine the local summary statistics, each insurance company must utilize the same categories for each variable. Collaboration with the various insurance companies to standardize how these categorical variables are reported would take place before data gathering begins.
 
@@ -244,7 +235,17 @@ grViz("
 )
 ```
 
-## Federated Learning vs. Oracle Summary
+## table 1 - Data Summary
+```{r, echo=FALSE}
+data(Aetna)
+table1::table1(~.,
+               data = Aetna[, c(2,3,5,10,12,14,16)],
+               caption = "Descriptive statistics for Aetna dataset") %>%
+  table1::t1kable() %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+## Table 3 - Federated Learning vs. Oracle Summary
 ```{r, echo=FALSE}
 kable(list(data_FL, data_oracle), caption = "Federated learning (left) vs. Oracle (right)", align = "c") %>%
   kable_styling(full_width = FALSE, latex_options = "HOLD_position") 
