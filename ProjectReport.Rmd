@@ -17,7 +17,7 @@ knitr::opts_chunk$set(tidy = TRUE)
 ```
 
 
-```{r, include=FALSE}
+```{r, echo=FALSE}
 library(table1)
 library(dplyr)
 library(kableExtra)
@@ -89,7 +89,7 @@ This seamless integration of inputs and outputs allows the FL package to run a c
 
 
 ## Dataset
-Table 1 in the appendix shows summary statistics for all the variables in the Aetna data set, as an example of how the local data is structured. All of the data used were simulated to appear in a manner that would be straightforward for insurance companies to provide.\newline
+Table 1 in the Appendix shows summary statistics for all the variables in the Aetna data set, as an example of how the local data is structured. All of the data used were simulated to appear in a manner that would be straightforward for insurance companies to provide.\newline
 
 Although there are a limited number of groups for the categorical variables in this simulated data, all of the functions in FL can accommodate any number of unique categories. To combine the local summary statistics, each insurance company must utilize the same categories for each variable. Collaboration with the various insurance companies to standardize how these categorical variables are reported would take place before data gathering begins.
 
@@ -97,18 +97,7 @@ Although there are a limited number of groups for the categorical variables in t
 # Application and Results
 
 ## R Shiny
-The Shiny app allows insurance companies to generate all of the necessary summary statistics for the federated learning linear regression by simply uploading their data set as a csv file. Table 2 below shows all the variables and their respective types that must be contained in the csv file.
-```{r, echo=FALSE}
-names = colnames(Aetna)[c(2,3,5,10,12,14,16)]
-types = sapply(Aetna, typeof)[c(2,3,5,10,12,14,16)]
-attributes(types)$names = NULL
-
-VarTypes = data.frame(Variables = names, Type = types)
-
-VarTypes %>%
-  kbl(caption = "Required CSV column headers and data types") %>%
-  kable_styling(latex_options = "HOLD_position")
-```
+The Shiny app allows insurance companies to generate all of the necessary summary statistics for the federated learning linear regression by simply uploading their data set as a csv file. Table 2 in the Appendix shows all the variables and their respective data types that must be contained in the csv file.
 
 After the csv has been uploaded, 4 different sets of summary statistics will be generated to allow for flexibility in how the final model is constructed. The different options considered were whether to include an age-squared term (Age.Sq) and/or an interaction between Medical Condition and length.of.stay (Int). By obtaining all 4 sets of summary statistics from each company, we can later perform the hypothesis tests necessary to decide if age-squared term and the interactions should be included in the final model. The app presents the summary statistics for each potential model in separate tabs.
 
@@ -235,7 +224,7 @@ grViz("
 )
 ```
 
-## table 1 - Data Summary
+## Table 1 - Data Summary
 ```{r, echo=FALSE}
 data(Aetna)
 table1::table1(~.,
@@ -245,9 +234,21 @@ table1::table1(~.,
   kable_styling(latex_options = "HOLD_position")
 ```
 
+## Table 2 - CSV Required Variables and Data Types
+```{r, echo=FALSE}
+names = colnames(Aetna)[c(2,3,5,10,12,14,16)]
+types = sapply(Aetna, typeof)[c(2,3,5,10,12,14,16)]
+attributes(types)$names = NULL
+
+VarTypes = data.frame(Variables = names, Type = types)
+
+VarTypes %>%
+  kbl(caption = "Required CSV column headers and data types") %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
 ## Table 3 - Federated Learning vs. Oracle Summary
 ```{r, echo=FALSE}
 kable(list(data_FL, data_oracle), caption = "Federated learning (left) vs. Oracle (right)", align = "c") %>%
   kable_styling(full_width = FALSE, latex_options = "HOLD_position") 
 ```
-
